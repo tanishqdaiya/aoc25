@@ -1,3 +1,6 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <assert.h>
 #include <ctype.h>
 #include <errno.h>
 #include <math.h>
@@ -7,5 +10,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "base.c"
-#include "day_5.c"
+#define TDLIB_IMPLEMENTATION
+#include "tdlib.h"
+#include "day_6.c"
