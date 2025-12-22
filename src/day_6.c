@@ -56,13 +56,6 @@ main(void)
         exit(EXIT_FAILURE);
     }
 
-    /*
-      read file and get no of rows and no of cols
-      read file by line.
-      fill columns for each row.
-      lastly, process the symbols and add.
-     */
-
     TD_String content = { 0 };
     read_file_into_string(&content, fp);
 
@@ -76,7 +69,7 @@ main(void)
         if (line.size == 0)
             continue;
 
-        printf(">" SV_Fmt SV_EL, SV_Arg(line));
+        //printf(">" SV_Fmt SV_EL, SV_Arg(line));
 
         U32_Row row = { 0 };
         while (line.size) {
@@ -85,12 +78,12 @@ main(void)
                 continue;
 
             if (character.data[0] == '*' || character.data[0] == '+') {
-                printf("'%c' encountered.\n", character.data[0]);
+                //printf("'%c' encountered.\n", character.data[0]);
                 td_vec_append(&symbols, character.data[0]);
                 continue;
             }
             
-            printf(">>" SV_Fmt SV_EL, SV_Arg(character));
+            //printf(">>" SV_Fmt SV_EL, SV_Arg(character));
 
             u32 n = 0;
             for (i32 i = 0; i < character.size; ++i)
@@ -101,20 +94,6 @@ main(void)
         if (row.size > 0)
             td_vec_append(&matrix, row);
     }
-
-    #if 0
-    for (size_t r = 0; r < matrix.size; ++r) {
-        U32_Row *row = &matrix.data[r];
-
-        for (size_t c = 0; c < row->size; ++c) {
-            printf("%u", row->data[c]);
-            if (c + 1 < row->size)
-                printf(" ");
-        }
-
-        printf("\n");
-    }
-    #endif
 
     u64 final_sum = 0;
     for (size_t col = 0; col < symbols.size; ++col) {
@@ -132,8 +111,8 @@ main(void)
                 post_op *= u32_matrix_get(&matrix, row, col);
             final_sum += post_op;
         }
-    } printf("\n");
-
+    }
+    
     printf("%I64u\n", final_sum);
     
     
