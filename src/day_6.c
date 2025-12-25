@@ -20,30 +20,6 @@ u32_matrix_get(U32_Matrix *m, size_t i, size_t j)
     return m->data[i].data[j];
 }
 
-u8
-read_file_into_string(TD_String *str, FILE *fp)
-{
-    i32 file_size;
-    size_t read;
-
-    if (fseek(fp, 0, SEEK_END) != 0)
-        return 0;
-
-    file_size = ftell(fp);
-    if (file_size < 0)
-        return 0;
-
-    rewind(fp);
-
-    td__vec_alloc(str, (size_t)file_size);
-    read = fread(str->data, 1, (size_t)file_size, fp);
-    if (read != (size_t)file_size)
-        return 0;
-
-    str->size = read;
-    return 1;
-}
-
 int
 main(void)
 {
@@ -57,7 +33,7 @@ main(void)
     }
 
     TD_String content = { 0 };
-    read_file_into_string(&content, fp);
+    td_read_file_to_string(&content, fp);
 
     TD_String_View content_view, line, character = { 0 };
     content_view = td_string_view_from_string(&content);

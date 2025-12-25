@@ -158,6 +158,9 @@ TD_LIBDEF TD_String_View td_string_view_trim(TD_String_View v);
 TD_LIBDEF TD_String_View td_string_slice(const TD_String *str,
                                          size_t           start,
                                          size_t           end);
+
+TD_LIBDEF bool td_read_file_to_string(TD_String *str, FILE *fp);
+
 #endif /* TDLIB_H */
 
 
@@ -239,6 +242,30 @@ td_string_slice(const TD_String *str,
     if (end < start) end = start;
 
     return (TD_String_View) { str->data + start, end - start };
+}
+
+TD_LIBDEF bool
+td_read_file_to_string(TD_String *str, FILE *fp)
+{
+    i32 file_size;
+    size_t read;
+
+    if (fseek(fp, 0, SEEK_END) != 0)
+        return false;
+
+    file_size = ftell(fp);
+    if (file_size < 0)
+        return false;
+
+    rewind(fp);
+
+    td__vec_alloc(str, (size_t)file_size);
+    read = fread(str->data, 1, (size_t)file_size, fp);
+    if (read != (size_t)file_size)
+        return false;
+
+    str->size = read;
+    return true;
 }
 
 #endif /* TDLIB_IMPLEMENTATION */
