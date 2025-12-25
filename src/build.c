@@ -12,4 +12,4 @@
 
 #define TDLIB_IMPLEMENTATION
 #include "tdlib.h"
-#include "day_6.c"
+#include "day_7.c"
