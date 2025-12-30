@@ -150,6 +150,8 @@ typedef struct {
 TD_LIBDEF TD_String_View td_string_view_from_string(TD_String *str);
 TD_LIBDEF TD_String_View td_string_view_from_cstr(char *cstr);
 TD_LIBDEF bool           td_string_view_equal(TD_String_View a, TD_String_View b);
+TD_LIBDEF TD_String_View td_string_view_slice(const TD_String_View v,
+                                              size_t start, size_t end);
 TD_LIBDEF TD_String_View td_string_view_chop(TD_String_View *v, char delim);
 TD_LIBDEF TD_String_View td_string_view_trim_left(TD_String_View v);
 TD_LIBDEF TD_String_View td_string_view_trim_right(TD_String_View v);
@@ -242,6 +244,17 @@ td_string_slice(const TD_String *str,
     if (end < start) end = start;
 
     return (TD_String_View) { str->data + start, end - start };
+}
+
+TD_LIBDEF TD_String_View
+td_string_view_slice(const TD_String_View v,
+                     size_t               start,
+                     size_t               end)
+{
+    if (start > end) start = end;
+    if (end > v.size) end = v.size;
+    
+    return (TD_String_View) { v.data + start, end - start };
 }
 
 TD_LIBDEF bool
